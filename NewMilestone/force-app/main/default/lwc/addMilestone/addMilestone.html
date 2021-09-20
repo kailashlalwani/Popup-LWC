@@ -1,0 +1,101 @@
+<template>
+
+	<lightning-button 
+		variant="brand" 
+		label="New Milestone" 
+		title="New Milestone" 
+		onclick={openModal}
+		class="slds-m-left_x-large">
+	</lightning-button>
+
+	<template if:true={isModalOpen}>
+		<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+			aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+			<div class="slds-modal__container">
+				<header class="slds-modal__header">
+					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+					<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New Milestone</h2>
+				</header>
+				<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+
+
+					<lightning-record-edit-form object-api-name="New_Milestone__c" record-id={myRecordId} onsubmit={handleClick}
+						onsuccess={handleSuccess} density="compact">
+						<lightning-messages>INFORMATION</lightning-messages>
+
+						Information
+						<table style="width:600px;">
+							<tr>
+								<td style="padding:10px"><label for="1" style="color:	#00008B" ><b>Milestone Name</b>
+                        			<b style="color: red;">*</b> </label>
+									<lightning-input type="text" id="1" label="Milestone_Name__c"  variant="label-hidden">
+									</lightning-input>
+								</td>
+							</tr>
+
+							<tr>
+								<td style="padding: 10px;"><label for="2" style="color: #00008B">
+                        <b>Notified to When Complete</b></label>
+									<lightning-input-field id="2" field-name="Notified_to_When_Complete__c" variant="label-hidden">
+									</lightning-input-field>
+								</td>
+							</tr>
+						</table>
+
+						<label for="3" style="color: black;">
+            <b>Description</b></label>
+						<!--
+            <lightning-input-field id="3" field-name="Description__c" variant="label-hidden" >
+             
+            </lightning-input-field>
+            -->
+
+
+						<lightning-input-rich-text placeholder="Type Something" formats={allowedFormats}>
+
+
+
+						</lightning-input-rich-text>
+
+
+
+					</lightning-record-edit-form>
+				</div>
+				
+				<footer class="slds-modal__footer">
+					<p slot="footer" style="text-align:center;">
+						<lightning-button variant="brand" label="Cancel" title="Primary action" onclick={handleCancel}
+							class="slds-m-left_x-small"></lightning-button>
+						<lightning-button variant="brand" label="Save" title="Primary action" onclick={handleClick}
+							class="slds-m-left_x-small"></lightning-button>
+						<lightning-button variant="brand" label="Save & New" title="Primary action" onclick={saveAndNewClick}
+							class="slds-m-left_x-small"></lightning-button>
+					</p>
+				</footer>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open"></div>
+	</template>
+
+</template>
+
+
+<!--
+    <header class="slds-modal__header">
+        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+            <lightning-icon icon-name="utility:close"
+                alternative-text="close"
+                variant="inverse"
+                size="small" >
+            </lightning-icon>
+            <span class="slds-assistive-text">Close</span>
+        </button>
+        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New Milestone</h2>
+    </header>
+    -->
