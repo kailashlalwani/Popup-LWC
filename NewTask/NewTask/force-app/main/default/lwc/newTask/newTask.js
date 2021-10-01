@@ -1,6 +1,9 @@
-import { LightningElement , track} from 'lwc';
+import { LightningElement , track, api} from 'lwc';
+
+import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { createRecord } from "lightning/uiRecordApi"
+
 import New_Task__c from '@salesforce/schema/New_Task__c';
 import Task_Name__c from '@salesforce/schema/New_Task__c.Task_Name__c';
 import Notified_to_When_Complete__c from '@salesforce/schema/New_Task__c.Notified_to_When_Complete__c';
@@ -14,6 +17,10 @@ import Description__c from '@salesforce/schema/New_Task__c.Description__c';
 
 export default class NewTask extends LightningElement {
 
+    @api recordId;
+    @track selectedMilestoneId;
+    @track selectedTaskId;
+    
     taskName = '';
     notifyName = '';
     notifyDate = '';
@@ -48,7 +55,6 @@ export default class NewTask extends LightningElement {
         if(event.target.label=='Notified_to_When_Complete__c'){
             this.notifyName = event.target.value;
         }
-        
         if(event.target.label=='End_Date__c'){
             this.notifyDate = event.target.value;
         }
@@ -57,7 +63,7 @@ export default class NewTask extends LightningElement {
             this.predessorName = event.target.value;
         }
         if(event.target.label=='Milestone__c'){
-            this.milestoneName = event.target.value;
+           this.milestoneName = event.target.value;
         }
         if(event.target.label=='Priority__c'){
             this.priorityName = event.target.value;
@@ -71,7 +77,8 @@ export default class NewTask extends LightningElement {
     } 
 
     insertTaskaction(){
-        console.log(this.selectedTaskId);
+        
+        console.log(this.selectedMilestoneId);
         const fields = {};
         fields[Task_Name__c.fieldApiName] = this.taskName;
         fields[Notified_to_When_Complete__c.fieldApiName] = this.notifyName;
@@ -81,7 +88,8 @@ export default class NewTask extends LightningElement {
         fields[Priority__c.fieldApiName] = this.priorityName;
         fields[Assign_to__c.fieldApiName] = this.assignName;
         fields[Description__c.fieldApiName] = this.descName;
-
+        
+        
         const recordInput = { apiName: New_Task__c.objectApiName, fields };
         createRecord(recordInput)
         .then(taskobj =>{
@@ -96,23 +104,36 @@ export default class NewTask extends LightningElement {
         })
 
         .catch(error => {
+            console.log(JSON.stringify(error));
             this.dispatchEvent(
                 new ShowToastEvent({
-                    title: 'Error creating record',
+                    title: 'Error ',
                     message: error.body.message,
                     variant: 'error',
                 }),
             );
         });
-    } 
-
-
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordPage',
+            attributes: {
+                recordId: taskobj.id,
+                objectApiName: 'New_Task__c', 
+                actionName: 'view'
+            },
+        });
+    }
+    
+    
     handleCancel(event){
         var url = window.location.href; 
         var value = url.substr(0,url.lastIndexOf('/') + 1);
         this.isModalOpen = false;
         return false;
     }
+    
 
-
+    myLookupHandle(event){
+        this.selectedMilestoneId = event.detail;
+        console.log(this.selectedMilestoneId);
+    }
 }
