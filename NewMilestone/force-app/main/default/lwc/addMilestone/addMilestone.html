@@ -1,5 +1,5 @@
 <template>
-
+	<!--
 	<lightning-button 
 		variant="brand" 
 		label="New Milestone" 
@@ -7,52 +7,95 @@
 		onclick={openModal}
 		class="slds-m-left_x-large">
 	</lightning-button>
+	-->
 
 	<template if:true={isModalOpen}>
-		<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
-			aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+		<section 
+			role="dialog" 
+			tabindex="-1" 
+			aria-labelledby="modal-heading-01" 
+			aria-modal="true"
+			aria-describedby="modal-content-id-1" 
+			class="slds-modal slds-fade-in-open">
 			<div class="slds-modal__container">
-				<header class="slds-modal__header">
-					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
-                        <lightning-icon icon-name="utility:close"
-                            alternative-text="close"
-                            variant="inverse"
-                            size="small" ></lightning-icon>
-                        <span class="slds-assistive-text">Close</span>
+				<header 
+					class="slds-modal__header" 
+					style="background-color: aquamarine;" >
+					<button 
+						class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" 
+						title="Close" 
+						onclick={closeModal}>
+                        		<lightning-icon
+							icon-name="utility:close"
+							alternative-text="close"
+							variant="inverse"
+							size="small">
+    					</lightning-icon>
+                        <span class="slds-assistive-text">Close
+						</span>
                     </button>
-					<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New Milestone</h2>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New Milestone</h2>
 				</header>
-				<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+				<div class="slds-modal__content slds-p-around_medium" id="modal-content-id">
 
 
 					<lightning-record-edit-form object-api-name="New_Milestone__c" record-id={myRecordId} onsubmit={handleClick}
 						onsuccess={handleSuccess} density="compact">
-						<lightning-messages>INFORMATION</lightning-messages>
+							<lightning-card>
+							<p style="color: black;"><b>INFORMATION</b></p>
+                            				&nbsp;&nbsp;
+							<div class="slds-grid slds-gutters">
+								<div class="slds-col slds-size_2-of-3">
+									<span>
+										<legend style="color: #00008B;">Milestone Name
+											<b style="color: red;">*</b> 
+										</legend>
+										<lightning-input 
+											type="text" 
+											id="1" 
+											required
+											label="Name" 
+                                           						 value={milestoneName}
+											onchange={MileName} variant="label-hidden"
+                                           						 class="requiredfield resetfields"
+											message-when-value-missing="Enter Value For This Field"
+                                      							style="color:#54698d">>
+										</lightning-input>
+									</span>
+								</div>
+							</div>
+                           				 &nbsp; &nbsp;
 
-						Information
-						<table style="width:600px;">
-							<tr>
-								<td style="padding:10px"><label for="1" style="color:	#00008B" ><b>Milestone Name</b>
-                        			<b style="color: red;">*</b> </label>
-									<lightning-input type="text" id="1" label="Milestone_Name__c" onchange={mileChangeVal} variant="label-hidden">
-									</lightning-input>
-								</td>
-							</tr>
-
-							<tr>
-								<td style="padding: 10px;"><label for="2" style="color: #00008B">
-                        <b>Notified to When Complete</b></label>
-									
-								</td>
-							</tr>
-						</table>
-
-						<label for="8" style="color: #00008B;">
-							<b style="padding: 10px;">Description</b>
-						</label>
-						<lightning-input-rich-text style="padding: 10px;" placeholder="Type Something" label="Description__c" onchange={mileChangeVal} formats={allowedFormats}>
-						</lightning-input-rich-text>
-
+							<div class="slds-grid slds-gutters">
+								<div class="slds-col slds-size_1-of-3">
+								  <span>
+									<legend 
+									   style="color: #00008B">Notify to When Completed 
+									</legend>
+									<lightning-input-field 
+										id="2" 
+										field-name="Notified_to_When_Complete__c" 
+										variant="label-hidden"
+										value={notifyName} onchange={NotName} 
+                                        					class="resetfields">
+									</lightning-input-field>
+								  </span>
+								</div>
+							</div>
+                           				 &nbsp; &nbsp;
+							
+							<legend style="color: #00008B;">
+								Description
+                           				 </legend>
+							<lightning-input-rich-text 
+                              					  value={descName}
+								placeholder="Type Something" 
+								label="Description__c" 
+								onchange={DesName} 
+								formats={formats}
+                              					  class="resetfields">
+							</lightning-input-rich-text>
+						</lightning-card>
 					</lightning-record-edit-form>
 				</div>
 				
@@ -62,7 +105,7 @@
 							class="slds-m-left_x-small"></lightning-button>
 						<lightning-button variant="brand" label="Save" title="Primary action" onclick={insertMilestoneAction}
 							class="slds-m-left_x-small"></lightning-button>
-						<lightning-button variant="brand" label="Save & New" title="Primary action" onclick={insertMilestoneAction}
+						<lightning-button variant="brand" label="Save & New" title="Primary action" onclick={saveAndNewClick}
 							class="slds-m-left_x-small"></lightning-button>
 					</p>
 				</footer>
